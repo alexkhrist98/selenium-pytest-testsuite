@@ -37,6 +37,13 @@ class BasePage(ABC):
     def go_back(self):
         """Этот метод позволяет вернуться на одну страницу назад."""
         return self.driver.back() 
+    def get_current_url(self): 
+        """Этот метод возвращается адрес страницы, на которой находится драйвер в момент вызова этого метода"""
+        return self.driver.current_url 
+
+    def __str__(self):
+        """Этот метод возвращает строку с используемым адресом страницы"""
+        return f"{self.__class__.__name__}({self.url})"
         
 
         
