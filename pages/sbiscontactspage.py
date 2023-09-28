@@ -13,7 +13,7 @@ class SbisContactsPage(BasePage):
 
     def get_tensor_banner(self):
         """Этот метод возвращает элемент 'баннер ТЕНЗОР'. """
-        BANNER_XPATH = "/html/body/div[1]/div/div/div[2]/div[1]/div[2]/div[1]/div/div/div[1]/div/div[4]/div[1]/div/div/div[2]/div/a"
+        BANNER_XPATH = "/html/body/div[1]/div/div/div[2]/div[1]/div[2]/div[1]/div/div/div[1]/div/div[4]/div[1]/div/div/div[2]/div/a/img"
         return self.driver.find_element(By.XPATH, BANNER_XPATH)
     
     def click_tensor_banner(self): 
