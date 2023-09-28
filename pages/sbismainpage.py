@@ -12,7 +12,8 @@ class SbisMainPage(BasePage):
 
     def get_contacts_button(self):
         """Этот метод находит кнопку 'контакты' на главыной странице сайта"""
-        return self.driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div[1]/div[2]/ul/li[2]/a") 
+        BUTTON_XPATH = "/html/body/div[1]/div/div/div[2]/div[1]/div[1]/div[1]/div[2]/ul/li[2]/a"
+        return self.driver.find_element(By.XPATH, BUTTON_XPATH) 
     
     def click_contacts_button(self):
         """Этот метод выполняет нажатие на кнопку контакты на главной странице сайта"""
