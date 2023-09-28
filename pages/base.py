@@ -39,7 +39,20 @@ class BasePage(ABC):
         return self.driver.back() 
     def get_current_url(self): 
         """Этот метод возвращается адрес страницы, на которой находится драйвер в момент вызова этого метода"""
-        return self.driver.current_url 
+        return self.driver.current_url
+
+    def switch_tab(self, tab_number: int = 1): 
+        """Этот метод позволяет переключаться между вкладками окна драйвера. 
+        В качестве аргумента он принимает номер вкладки. По умолчанию метод переключает на следующую вкладку.
+        Индексация вкладок выглдяти так:
+        -Под индексом 0 обозначена текущая вкладка. 
+        -Под индексом 1 - следующаяю 
+        -Под индексом -1 - предыдущая."""
+        return self.driver.switch_to.window(self.driver.window_handles[tab_number])
+    
+    def close_browser(self): 
+        """Этот метод позволяет закрыть браузер после завершения теста"""
+        return self.driver.close() 
 
     def __str__(self):
         """Этот метод возвращает строку с используемым адресом страницы"""
