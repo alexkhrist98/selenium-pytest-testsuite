@@ -22,5 +22,27 @@ class TensorMainPage(BasePage):
             self.make_screenshot()
             self.close_browser()
             raise ElementNotFound("Блок Сила в людях не обнаружен на странице")
+    
+    def get_more_link(self):
+        """Этот метод находит ссылку Подробнее в блоке Сила в людях. Метод возвращает элемент, содержащий в себе эту ссылку"""
+        LINK_XPATH = "/html/body/div[1]/div/div/div[2]/div[1]/div[2]/div[1]/div/div/div[1]/div/div[5]/div/div/div[1]/div/p[4]/a"
+        try:
+            return self.get_power_in_people_block().find_element(By.XPATH, LINK_XPATH)
+        except NoSuchElementException:
+            self.make_screenshot()
+            self.close_browser()
+            raise ElementNotFound("Ссылка подробнее не найдне")
+        except exception as e:
+            self.make_screenshot()
+            self.close_browser()
+            raise e 
+    
+    def click_more_link(self):
+        """Этот метод нажимает на ссылку Подробнее в блоке Сила в людях"""
+        try: 
+            return self.get_more_link().click() 
+        except Exception as e: 
+            self.make_screenshot()
+            raise e 
 
     

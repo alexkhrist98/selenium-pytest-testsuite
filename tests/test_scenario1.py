@@ -26,7 +26,19 @@ def test_power_in_people_block_present():
     main_page = TensorMainPage()
     main_page.navigate_to_url()
     main_page.scroll_down_with_keyboard()
-    time.sleep(10)
     assert main_page.get_power_in_people_block() #проверяет наличие блока сила в людях на странице
-    main_page.close_browser() 
+    main_page.close_browser()
+
+def test_more_link_in_power_of_people():
+    """Этот тест проверяет корректность перехода по ссылке в блоке Сила в людях"""
+    TARGET_URL = "https://tensor.ru/about"
+    SCROLL_OFFSET = 600
+    main_page = TensorMainPage() 
+    main_page.navigate_to_url() 
+    main_page.scroll_down_with_keyboard(5)
+    main_page.scroll_down(600) 
+    time.sleep(5)
+    main_page.click_more_link() 
+    assert main_page.get_current_url() == TARGET_URL 
+    main_page.close_browser()  
 

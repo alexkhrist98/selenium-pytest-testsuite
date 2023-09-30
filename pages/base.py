@@ -15,14 +15,16 @@ class BasePage(ABC):
         Он также инициализирует свойство self.driver, присваевая ему экземпляр класса webdriver.Edge
         Также этот метод инициализирует опции веб-драйвера, в частности, местоположение скриншотов, которые
         сохраняются при возникновнеии исключений."""
-        screenshot_dir = self.make_screenshot_dir()
-        driver_options = webdriver.EdgeOptions()
+        DRIVER_PATH = r"C:\Users\alex-\PycharmProjects\selenium-pytest-testsuite\chromedriver.exe"
+        screenshot_dir = self._make_screenshot_dir()
+        driver_options = webdriver.ChromeOptions() 
         driver_options.add_argument(f"--screenshot-dir={screenshot_dir}")
-        self.driver = webdriver.Edge(options=driver_options)  
+        DRIVER_SERVICE = webdriver.ChromeService(DRIVER_PATH)
+        self.driver = webdriver.Chrome(service=DRIVER_SERVICE, options=driver_options) 
         self.url = url 
     
     @staticmethod
-    def make_screenshot_dir():
+    def _make_screenshot_dir():
         """Этот статический метод создаёт папку, в которой будут храниться скриншоты, 
         сохраняемые драйвером во врмея проведения тестов."""
         screenshot_dir = os.path.join(os.getcwd(), "screenshots")
@@ -43,6 +45,7 @@ class BasePage(ABC):
             return self.driver.execute_script(f"window.scrollBy(0, {offset});")
         if not offset:
             return self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
     
     def scroll_down_with_keyboard(self, num_of_strokes: int = 1):
         """Этот метод предлагает альтернативную имплементацию прокрутки страницы.
@@ -86,7 +89,7 @@ class BasePage(ABC):
     def make_screenshot(self): 
         """Этот метод созраняет скриншот страницы. 
         Он будет использован при обработке исключений для сохранения информации о том, что произошло"""
-        return self.driver.save_screenshot(f"{__class__.__name__}: {datetime.now()}.png")
+        return self.driver.save_screenshot(self._make_screenshot_dir() + f"/{self.__class__.__name__}: {datetime.now()}.png")
 
     def __str__(self):
         """Этот метод возвращает строку с используемым адресом страницы"""

@@ -20,7 +20,7 @@ class SbisMainPage(BasePage):
         except NoSuchElementException:
             self.make_screenshot()
             raise ElementNotFound("Кнопка Контакты не найдена на странице")
-        except exception as e:
+        except Exception as e:
             self.make_screenshot()
             raise e 
     

@@ -21,7 +21,7 @@ class SbisContactsPage(BasePage):
         except NoSuchElementException:
             self.make_screenshot() 
             raise ElementNotFound("Баннер Тензор не найден") 
-        except exception as e: 
+        except Exception as e: 
             self.make_screenshot()
             raise e 
             
