@@ -1,5 +1,6 @@
 from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.common.by import By 
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains  
 from .base import BasePage 
 from .exceptions import ElementNotFound
 
@@ -36,7 +37,15 @@ class TensorMainPage(BasePage):
             self.make_screenshot()
             self.close_browser()
             raise e 
-    
+        
+    def scroll_power_in_people_into_view(self): 
+        """Этот метод использует ActionChains для того, чтобы прокрутить окно браузера к элементу Блок Сила в людях."""
+        try:
+            return ActionChains(self.driver).scroll_to_element(self.get_power_in_people_block()).perform()
+        except Exception as e: 
+            self.make_screenshot()
+            raise e 
+
     def click_more_link(self):
         """Этот метод нажимает на ссылку Подробнее в блоке Сила в людях"""
         try: 
