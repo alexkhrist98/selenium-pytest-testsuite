@@ -4,6 +4,7 @@ import os
 from selenium import webdriver 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains 
 
 class BasePage(ABC):
     """Этот абстрактный класс создаёт необходимые базовые методы для работы с тестируемой страницей. 
@@ -12,15 +13,14 @@ class BasePage(ABC):
 
     def __init__(self, url: str):
         """Этот метод создаёт экземпляр класса веб-страница. В качесте аргументов он принимает адрес страницы. 
-        Он также инициализирует свойство self.driver, присваевая ему экземпляр класса webdriver.Edge
+        Он также инициализирует свойство self.driver, присваевая ему экземпляр класса webdriver.Chrome
         Также этот метод инициализирует опции веб-драйвера, в частности, местоположение скриншотов, которые
         сохраняются при возникновнеии исключений."""
         DRIVER_PATH = r"C:\Users\alex-\PycharmProjects\selenium-pytest-testsuite\chromedriver.exe"
         screenshot_dir = self._make_screenshot_dir()
         driver_options = webdriver.ChromeOptions() 
         driver_options.add_argument(f"--screenshot-dir={screenshot_dir}")
-        DRIVER_SERVICE = webdriver.ChromeService(DRIVER_PATH)
-        self.driver = webdriver.Chrome(service=DRIVER_SERVICE, options=driver_options) 
+        self.driver = webdriver.Chrome(options=driver_options) 
         self.url = url 
     
     @staticmethod
@@ -37,34 +37,18 @@ class BasePage(ABC):
         """ЭЭтот метод вызывает метод webdriver.get и передаёт ему аргумент self.url"""
         return self.driver.get(self.url)
 
-    def scroll_down(self, offset: int = 0): 
-        """Этот метод позволяет прокрутить страницу вниз. В качестве необязательного аргумента он принимает offset. При передаче этого аргумента 
-        страница прокручивается на заданное количество пикселей. При его значении по умолчанию, страница прокручивается до конца."""
+    def scroll_down(self, offset: int): 
+        """Этот метод позволяет прокрутить страницу вниз на определённое количетсво пикселей. 
+        В качестве аргумента он принимает offset - количество пикселей.
+        ВНИМАНИЕ! Метод был переписан по причине невозможности выполнения JavaScript на сайте.
+        Для прокрутки к конкретном элементу, используйте методы, определённыевнутри подклассов страниц."""
+        return ActionChains(self.driver).scroll_by_amount(0, offset).perform()
 
-        if offset: 
-            return self.driver.execute_script(f"window.scrollBy(0, {offset});")
-        if not offset:
-            return self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-
-    
-    def scroll_down_with_keyboard(self, num_of_strokes: int = 1):
-        """Этот метод предлагает альтернативную имплементацию прокрутки страницы.
-        В качестве аргумента метод принимает количество нажатий на кнопку page downю 
-        Метод находит тег body и посылает ему клавишу page down, что позволяет прокручивать страницу. 
-        Метод может быть удалён после решения проблемы с выполнением JavaScript кода"""
-        body = self.driver.find_element(By.TAG_NAME, "body")
-        for i in range(0, num_of_strokes + 1):
-            body.send_keys(Keys.PAGE_DOWN)
-        
-    
     def scroll_up(self, offset: int = 0): 
-        """Этот метод позволяет прокрутить страницу вверх.
-        Он принимает параметр offset. Если offset задан, то 
-        страница прокручивается вверх на заданное количество пикселей. При его нулевом значении, страница прокручевается вверх к началу страницы"""
-        if offset: 
-            return self.driver.execute_script(f"window.scrollBy(0, -{offset});")
-        if not offset:
-            return self.driver.execute_script("window.scrollTo(0, 0);")
+        """Этот метод позволяет прокрутить страницу вверх на заданное количетсво пикселей.
+        Он принимает аргумент offset - количество пикселей. 
+        Для прокрутки к конкретному элементу, используйте методы, определённые в подклассах."""
+        return ActionChains(self.driver).scroll_by_amount(0, -offset).perform()
 
     def go_back(self):
         """Этот метод позволяет вернуться на одну страницу назад."""
