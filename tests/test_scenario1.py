@@ -2,6 +2,7 @@ import time
 from pages.sbismainpage import SbisMainPage
 from pages.sbiscontactspage import SbisContactsPage  
 from pages.tensormainpage import TensorMainPage 
+from pages.tensoraboutpage import TensorAboutPage 
 
 def test_sbis_go_to_contacts(): 
     """Этот тест проверяет переход на страницу контакты с главной страницы СБИС"""
@@ -31,11 +32,35 @@ def test_power_in_people_block_present():
 def test_more_link_in_power_of_people():
     """Этот тест проверяет корректность перехода по ссылке в блоке Сила в людях"""
     TARGET_URL = "https://tensor.ru/about"
-    SCROLL_OFFSET = 600
     main_page = TensorMainPage() 
     main_page.navigate_to_url() 
     main_page.scroll_power_in_people_into_view() 
     main_page.click_more_link() 
     assert main_page.get_current_url() == TARGET_URL #проверяет правильность перехода по ссылке
-    main_page.close_browser()  
+    main_page.close_browser() 
+
+def test_check_image_size_in_working_block():
+    """Этот тест проверяет, совпадают ли высоты и ширина у картинок в разделе Работаем 
+    страница О компании на сайте Тензо."""
+    about_page = TensorAboutPage() 
+    about_page.navigate_to_url() 
+    about_page.scroll_working_block_into_view()
+    heights_list = about_page.get_images_heights() 
+    widths_list = about_page.get_images_width()
+    assert size_isequal(heights_list, widths_list) == True #проверяет, совпадают ли длина и ширина изображений в блоке Работаем
+    about_page.close_browser() 
+
+def size_isequal(heights: list, widths: list): 
+    """Эта функция проверяет, совпадают ли высота и ширина элементов в блоке Работаем. 
+    В качестве аргументов он принимает списки, содержащие значения высоты и ширины для каждого изображения (список widths и список hights).
+    Метод возвращает True, если значения совпадают. Если же хоть одно значение не совпадает, он возвращает False."""
+    height_pivot = heights[0]
+    width_pivot = widths[0]
+    for height, width in zip(heights, widths):
+        if height != height_pivot or width != width_pivot: 
+            return False 
+    return True
+        
+
+
 
