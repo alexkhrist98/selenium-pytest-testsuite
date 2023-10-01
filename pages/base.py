@@ -16,7 +16,6 @@ class BasePage(ABC):
         Он также инициализирует свойство self.driver, присваевая ему экземпляр класса webdriver.Chrome
         Также этот метод инициализирует опции веб-драйвера, в частности, местоположение скриншотов, которые
         сохраняются при возникновнеии исключений."""
-        DRIVER_PATH = r"C:\Users\alex-\PycharmProjects\selenium-pytest-testsuite\chromedriver.exe"
         screenshot_dir = self._make_screenshot_dir()
         driver_options = webdriver.ChromeOptions() 
         driver_options.add_argument(f"--screenshot-dir={screenshot_dir}")
@@ -73,7 +72,7 @@ class BasePage(ABC):
     def make_screenshot(self): 
         """Этот метод созраняет скриншот страницы. 
         Он будет использован при обработке исключений для сохранения информации о том, что произошло"""
-        return self.driver.save_screenshot(self._make_screenshot_dir() + f"/{self.__class__.__name__}: {datetime.now()}.png")
+        return self.driver.save_screenshot(self._make_screenshot_dir() + f"\\{self.__class__.__name__}: {datetime.now()}.png")
 
     def __str__(self):
         """Этот метод возвращает строку с используемым адресом страницы"""
